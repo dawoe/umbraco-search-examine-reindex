@@ -20,8 +20,9 @@ Implementation plan: `docs/superpowers/plans/2026-09-15-reindex-detail-box.md`.
   `wwwroot/App_Plugins/searchreindex` built by the client)
 - `src/code/Umbraco.Community.Search.Examine.Reindex.Client/` — backoffice client (TypeScript,
   Lit, Vite). Output goes to the package's `wwwroot/App_Plugins/searchreindex` (gitignored)
-- `src/tests/Umbraco.Community.Search.Examine.Reindex.Tests/` — NUnit + Moq unit tests
-- `src/tests/Umbraco.Community.Search.Examine.Reindex.E2E/` — Playwright end-to-end tests
+- `src/tests/Umbraco.Community.Search.Examine.Reindex.Tests/` — NUnit + Moq unit tests (25 tests)
+- `src/tests/Umbraco.Community.Search.Examine.Reindex.E2E/` — Playwright end-to-end tests (5
+  tests: 1 auth setup + 4 specs)
 - `test-sites/Website-V17/` — Umbraco 17 test site referencing the package project
 - `src/assets/` — NuGet readme and icon
 
@@ -94,4 +95,34 @@ npm run test:e2e
   `beforeRequest` destructure) — TS 6.0.3 (matching the pin already used by the sibling
   `Umbraco.Cms.Search` client projects) is the lowest version that both runs the generator and
   type-checks the generated output cleanly.
-- (add entries here as implementation reveals them)
+- The client build must run before `dotnet build`: the Razor SDK project ships whatever is in
+  `wwwroot/App_Plugins/searchreindex`, which is gitignored.
+- `npm run generate-api` needs the test site running on https://localhost:44310. The generated
+  `src/api` folder is committed; `swagger.json` is not.
+- Moq and `out` parameters: set up with `out It.Ref<long>.IsAny` and return through a custom
+  delegate that has the same signature (see `IndexContentEnumeratorTests`).
+- `IndexOptions.RegisterContentIndex<TIndexer, TSearcher, TStrategy>` accepts interface types as
+  type arguments, which keeps tests free of fakes.
+- In rebuild mode the element does not call `workspaceContext.setState('loading')`: Umbraco
+  Search's `IndexRebuildCompleted` event can arrive before the next poll and would leave the
+  workspace stuck in the loading view. It calls `setUserWaitingForIndexUpdate` instead.
+- Umbraco Search's own toast for a finished rebuild reads "Search Index Rebuild Completed"; the
+  E2E rebuild test waits for it.
+- The `@umbraco-cms/search` npm package only ships types. Never bundle it; the importmap of the
+  Umbraco Search package resolves `@umbraco-cms/search/global` and `/settings` at runtime.
+- `Direction` (member ordering) lives in `Umbraco.Cms.Core`, not in a `Persistence` namespace.
+- MVC application-part discovery for the test site is incremental on `project.assets.json`: after
+  adding the first controller to a referenced project, run `dotnet clean` in
+  `test-sites/Website-V17` or the controllers 404 until the next full rebuild. Never work around
+  this with `AddControllers().AddApplicationPart(...)` from a composer.
+- `IIndexContentReindexer` is registered transient (not singleton) because it captures Umbraco
+  Search's transient `IDistributedContentIndexRefresher` and `IDistributedContentIndexRebuilder`;
+  the shared state lives in the singleton `IReindexStatusTracker`.
+- `tryExecute` shows Umbraco's generic error toast by default; the repository passes
+  `{ disableNotifications: true }` because the element owns all user-facing messages (409 must
+  attach silently, polling errors must stay silent).
+- Notification data uses `headline`, not `title`; `title` is silently ignored and the toast shows
+  only the message.
+- E2E: Playwright's built-in `request` fixture is not authenticated against the backoffice API;
+  use `umbracoApi.get(...)` from the testhelpers fixture. The testhelpers package needs `tslib` at
+  runtime.
