@@ -2,7 +2,7 @@ import { customElement, html } from '@umbraco-cms/backoffice/external/lit';
 import { UmbLitElement } from '@umbraco-cms/backoffice/lit-element';
 
 @customElement('reindex-detail-box')
-export class ReindexDetailBox extends UmbLitElement {
+export default class ReindexDetailBox extends UmbLitElement {
  
   constructor() {
     super();   
@@ -14,5 +14,11 @@ export class ReindexDetailBox extends UmbLitElement {
         <p>Implement this/p>
       </uui-box>
     `;
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    "reindex-detail-box": ReindexDetailBox;
   }
 }
