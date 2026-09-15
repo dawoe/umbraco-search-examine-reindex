@@ -1,23 +1,22 @@
-import ReindexDetailBox from './reindex.ts';
-import type { ManifestElement } from '@umbraco-cms/backoffice/extension-api';
+import ReindexDetailBoxElement from './reindex-detail-box.element.js';
+import type { ManifestSearchIndexDetailBox } from '@umbraco-cms/search/global';
 
-// Make TypeScript recognize the searchIndexDetailBox type in this package
-declare global {
-  interface UmbExtensionManifestMap {
-    mySearchIndexDetailBox: ManifestElement & { type: 'searchIndexDetailBox' };
-  }
-}
-
-const detailBox : UmbExtensionManifest  = {
+const detailBox: ManifestSearchIndexDetailBox = {
   type: 'searchIndexDetailBox',
-  name: 'Umbraco Search Examine Reindex',
-  alias: 'Umbraco.Community.Search.Examine.Reindex.Detailbox',
-  element: ReindexDetailBox,
+  alias: 'Umbraco.Community.Search.Examine.Reindex.DetailBox',
+  name: 'Umbraco Search Examine Reindex Detail Box',
+  element: ReindexDetailBoxElement,
   weight: 150,
   meta: {
-    label: 'Reindex',
+    label: '#searchExamineReindex_boxLabel',
     column: 'right',
   },
+  conditions: [
+    {
+      alias: 'Umb.Search.Condition.IndexProviderName',
+      match: 'search-examine-provider',
+    },
+  ],
 };
 
-export const manifests = [detailBox];
+export const manifests: Array<UmbExtensionManifest> = [detailBox];
