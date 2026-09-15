@@ -87,4 +87,11 @@ npm run test:e2e
 - Umbraco Search's built-in "Rebuild" repopulates the Examine index from the **database cache**
   of index documents (`ContentIndexingDataCollectionService.CollectAsync` reads the cache first).
   Only flushing the cache makes handler changes visible. That is the reason this package exists.
+- The client pins TypeScript 6.0: `@hey-api/openapi-ts` cannot run on TypeScript 7 (the native
+  rewrite removes the classic compiler API), so `npm run generate-api` fails silently with it.
+  TypeScript 5.8/5.9 install and generate fine but fail `tsc --noEmit` on the generated
+  `src/api/client/client.gen.ts` (`error TS2578: Unused '@ts-expect-error' directive` at the
+  `beforeRequest` destructure) — TS 6.0.3 (matching the pin already used by the sibling
+  `Umbraco.Cms.Search` client projects) is the lowest version that both runs the generator and
+  type-checks the generated output cleanly.
 - (add entries here as implementation reveals them)

@@ -17,7 +17,7 @@
     "@hey-api/openapi-ts": "^0.85.2",
     "@umbraco-cms/backoffice": "^17.0.0",
     "@umbraco-cms/search": "^17.1.0",
-    "typescript": "^7.0.2",
+    "typescript": "^6.0.3",
     "vite": "^8.2.2"
   }
 }
