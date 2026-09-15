@@ -61,8 +61,11 @@ export class ReindexDetailBoxElement extends UmbLitElement {
     if (!alias) return;
 
     const { data } = await this.#repository.getStatus(alias);
-    if (!data || data.indexAlias !== alias) {
-      // transient error or alias changed meanwhile: keep polling if we were running
+    // The element may have been removed or switched to another index while the request was in flight.
+    if (!this.isConnected || this._indexAlias !== alias) return;
+
+    if (!data) {
+      // transient error: keep polling while we believe a job is running
       if (this._status?.state === 'Running') this.#schedulePoll();
       return;
     }
@@ -104,6 +107,7 @@ export class ReindexDetailBoxElement extends UmbLitElement {
   }
 
   #schedulePoll() {
+    if (!this.isConnected) return;
     this.#stopPolling();
     this.#pollTimer = setTimeout(() => void this.#refreshStatus(), POLL_INTERVAL_MS);
   }
@@ -121,6 +125,7 @@ export class ReindexDetailBoxElement extends UmbLitElement {
 
   async #onReindexClick() {
     const alias = this._indexAlias;
+    const rebuildIndex = this._rebuildIndex;
     if (!alias) return;
 
     try {
@@ -128,7 +133,7 @@ export class ReindexDetailBoxElement extends UmbLitElement {
         color: 'warning',
         headline: this.localize.term('searchExamineReindex_confirmHeadline'),
         content: this.localize.term(
-          this._rebuildIndex
+          rebuildIndex
             ? 'searchExamineReindex_confirmMessageRebuild'
             : 'searchExamineReindex_confirmMessage',
           alias,
@@ -140,11 +145,14 @@ export class ReindexDetailBoxElement extends UmbLitElement {
     }
 
     this._buttonState = 'waiting';
-    if (this._rebuildIndex) {
+    if (rebuildIndex) {
       this.#searchContext?.setUserWaitingForIndexUpdate(alias, true);
     }
 
-    const { data, error } = await this.#repository.start(alias, this._rebuildIndex);
+    const { data, error } = await this.#repository.start(alias, rebuildIndex);
+    // The element may have been removed or switched to another index while the request was in flight.
+    if (!this.isConnected || this._indexAlias !== alias) return;
+
     this._buttonState = undefined;
 
     if (data) {
@@ -161,11 +169,14 @@ export class ReindexDetailBoxElement extends UmbLitElement {
 
     if (UmbApiError.isUmbApiError(error) && error.status === 409) {
       // already running: attach to the running job
-      void this.#refreshStatus();
+      await this.#refreshStatus();
+      if (rebuildIndex && this._status && !this._status.rebuildIndex) {
+        this.#searchContext?.setUserWaitingForIndexUpdate(alias, false);
+      }
       return;
     }
 
-    if (this._rebuildIndex) {
+    if (rebuildIndex) {
       this.#searchContext?.setUserWaitingForIndexUpdate(alias, false);
     }
 

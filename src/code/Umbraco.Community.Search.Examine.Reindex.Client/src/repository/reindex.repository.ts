@@ -17,12 +17,15 @@ export class ReindexRepository extends UmbRepositoryBase {
     const { data, error } = await tryExecute(
       this,
       reindex({ path: { indexAlias }, body: { rebuildIndex } }),
+      { disableNotifications: true },
     );
     return { data: data ? this.#map(data) : undefined, error };
   }
 
   async getStatus(indexAlias: string) {
-    const { data, error } = await tryExecute(this, getReindexStatus({ path: { indexAlias } }));
+    const { data, error } = await tryExecute(this, getReindexStatus({ path: { indexAlias } }), {
+      disableNotifications: true,
+    });
     return { data: data ? this.#map(data) : undefined, error };
   }
 
