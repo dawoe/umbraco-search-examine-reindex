@@ -10,8 +10,8 @@ export default class ReindexDetailBox extends UmbLitElement {
 
   override render() {
     return html`
-      <uui-box>
-        <p>Implement this/p>
+      <uui-box label headline="Reindex">
+        <p>Implement this</p>
       </uui-box>
     `;
   }
