@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="../test-sites/Website-V17/Website-V17.csproj" />
   <Project Path="code/Umbraco.Community.Search.Examine.Reindex/Umbraco.Community.Search.Examine.Reindex.csproj" />
   <Project Path="tests/Umbraco.Community.Search.Examine.Reindex.Tests/Umbraco.Community.Search.Examine.Reindex.Tests.csproj" />
 </Solution>
