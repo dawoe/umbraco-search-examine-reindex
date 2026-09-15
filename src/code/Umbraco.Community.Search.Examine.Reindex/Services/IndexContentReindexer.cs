@@ -138,7 +138,7 @@ internal sealed class IndexContentReindexer : IIndexContentReindexer
             this.statusTracker.Update(status with { State = ReindexState.Idle, CompletedAt = this.timeProvider.GetUtcNow() });
             this.logger.LogInformation("Finished reindex of index {IndexAlias}: {ProcessedItems} items processed", indexAlias, status.ProcessedItems);
         }
-        catch (OperationCanceledException)
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
             this.logger.LogWarning("Reindex of index {IndexAlias} was cancelled", indexAlias);
             this.Fail(status, "The reindex was cancelled because the application is shutting down.");

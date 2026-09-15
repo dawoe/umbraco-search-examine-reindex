@@ -11,6 +11,20 @@
           "StyleCop.Analyzers.Unstable": "1.2.0.556"
         }
       },
+      "Umbraco.Cms.Api.Management": {
+        "type": "Direct",
+        "requested": "[17.0.0, 18.0.0)",
+        "resolved": "17.0.0",
+        "contentHash": "G7xO9Oa77+qOzf6j9QU44Q1r0RwjevXMqZIgn3m+EP9u6sybdKaVxwv/lDK+FWHx1xrq7AhEYo+lfD7FlbanVw==",
+        "dependencies": {
+          "JsonPatch.Net": "3.3.0",
+          "Swashbuckle.AspNetCore": "10.0.1",
+          "System.Linq.Async": "7.0.0",
+          "Umbraco.Cms.Api.Common": "[17.0.0, 18.0.0)",
+          "Umbraco.Cms.Infrastructure": "[17.0.0, 18.0.0)",
+          "Umbraco.Cms.PublishedCache.HybridCache": "[17.0.0, 18.0.0)"
+        }
+      },
       "Umbraco.Cms.Core": {
         "type": "Direct",
         "requested": "[17.0.0, 18.0.0)",
@@ -1284,19 +1298,6 @@
           "Swashbuckle.AspNetCore": "10.0.1",
           "Umbraco.Cms.Core": "[17.0.0, 18.0.0)",
           "Umbraco.Cms.Web.Common": "[17.0.0, 18.0.0)"
-        }
-      },
-      "Umbraco.Cms.Api.Management": {
-        "type": "Transitive",
-        "resolved": "17.0.0",
-        "contentHash": "G7xO9Oa77+qOzf6j9QU44Q1r0RwjevXMqZIgn3m+EP9u6sybdKaVxwv/lDK+FWHx1xrq7AhEYo+lfD7FlbanVw==",
-        "dependencies": {
-          "JsonPatch.Net": "3.3.0",
-          "Swashbuckle.AspNetCore": "10.0.1",
-          "System.Linq.Async": "7.0.0",
-          "Umbraco.Cms.Api.Common": "[17.0.0, 18.0.0)",
-          "Umbraco.Cms.Infrastructure": "[17.0.0, 18.0.0)",
-          "Umbraco.Cms.PublishedCache.HybridCache": "[17.0.0, 18.0.0)"
         }
       },
       "Umbraco.Cms.Examine.Lucene": {

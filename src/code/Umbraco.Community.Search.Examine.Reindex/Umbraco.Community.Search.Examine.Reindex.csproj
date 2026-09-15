@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Umbraco.Cms.Search.Provider.Examine" />
+    <PackageReference Include="Umbraco.Cms.Api.Management" />
   </ItemGroup>
 
 </Project>

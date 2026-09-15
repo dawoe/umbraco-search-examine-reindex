@@ -40,6 +40,7 @@ export class ReindexDetailBoxElement extends UmbLitElement {
         (unique) => {
           this._indexAlias = unique ?? undefined;
           this._status = undefined;
+          this._buttonState = undefined;
           this.#stopPolling();
           if (this._indexAlias) void this.#refreshStatus();
         },
@@ -92,6 +93,9 @@ export class ReindexDetailBoxElement extends UmbLitElement {
           message: status.errorMessage ?? '',
         },
       });
+      if (status.rebuildIndex) {
+        this.#searchContext?.setUserWaitingForIndexUpdate(status.indexAlias, false);
+      }
       return;
     }
 

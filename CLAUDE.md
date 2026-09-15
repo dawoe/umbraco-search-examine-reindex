@@ -126,3 +126,7 @@ npm run test:e2e
 - E2E: Playwright's built-in `request` fixture is not authenticated against the backoffice API;
   use `umbracoApi.get(...)` from the testhelpers fixture. The testhelpers package needs `tslib` at
   runtime.
+- `"DOM.Iterable"` is in the client tsconfig `lib` because the generated hey-api client iterates
+  `URLSearchParams`.
+- The E2E specs deliberately do not assert an intermediate `Running` status because small sites
+  finish before the first poll.
