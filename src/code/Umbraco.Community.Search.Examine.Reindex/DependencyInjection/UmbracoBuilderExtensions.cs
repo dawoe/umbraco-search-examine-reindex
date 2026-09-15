@@ -41,9 +41,7 @@ public static class UmbracoBuilderExtensions
         builder.Services.TryAddSingleton(TimeProvider.System);
         builder.Services.AddSingleton<IReindexStatusTracker, ReindexStatusTracker>();
         builder.Services.AddSingleton<IIndexContentEnumerator, IndexContentEnumerator>();
-        builder.Services.AddSingleton<IIndexContentReindexer, IndexContentReindexer>();
-
-        builder.Services.AddControllers().AddApplicationPart(typeof(UmbracoBuilderExtensions).Assembly);
+        builder.Services.AddTransient<IIndexContentReindexer, IndexContentReindexer>();
 
         builder.Services.AddSingleton<IOperationIdHandler, ReindexOperationIdHandler>();
         builder.Services.Configure<SwaggerGenOptions>(options =>
