@@ -681,7 +681,7 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
 
 using Moq;
 using Umbraco.Cms.Core.Models;
-using Umbraco.Cms.Core.Persistence.DatabaseModelDefinitions;
+using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Persistence.Querying;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Community.Search.Examine.Reindex.Services;
@@ -884,7 +884,7 @@ internal interface IIndexContentEnumerator
 
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models;
-using Umbraco.Cms.Core.Persistence.DatabaseModelDefinitions;
+using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Services;
 
 namespace Umbraco.Community.Search.Examine.Reindex.Services;
