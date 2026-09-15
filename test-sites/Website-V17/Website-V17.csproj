@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -16,6 +16,10 @@
   <ItemGroup>
     <!-- Opt-in to app-local ICU to ensure consistent globalization APIs across different platforms -->
     <PackageReference Include="Microsoft.ICU.ICU4C.Runtime" Version="72.1.0.3" />
+    <PackageReference Include="Umbraco.Cms.Search.BackOffice" Version="17.1.0" />
+    <PackageReference Include="Umbraco.Cms.Search.Core" Version="17.1.0" />
+    <PackageReference Include="Umbraco.Cms.Search.Provider.Examine" Version="17.1.0-beta.1" />
+    <ProjectReference Include="..\..\src\code\Umbraco.Community.Search.Examine.Reindex\Umbraco.Community.Search.Examine.Reindex.csproj" />
     <RuntimeHostConfigurationOption Include="System.Globalization.AppLocalIcu" Value="72.1.0.3" Condition="$(RuntimeIdentifier.StartsWith('linux')) or $(RuntimeIdentifier.StartsWith('win')) or ('$(RuntimeIdentifier)' == '' and !$([MSBuild]::IsOSPlatform('osx')))" />
   </ItemGroup>
 
