@@ -81,15 +81,15 @@ test.describe('Reindex detail box', () => {
     await openReindexConfirmModal(umbracoUi.page);
     await confirmModalButton(umbracoUi.page, 'Reindex').click();
 
-    // Umbraco's default toast layout only renders the notification's `message`, not its `title`
-    // ("Reindex started" / "Reindex completed" never appear on screen), so we assert on the
-    // (localized, alias-interpolated) message text instead. The same text is duplicated into a
-    // visually-hidden `#sr-live` region for screen readers, so `.first()` disambiguates.
+    // The (localized, alias-interpolated) message text is duplicated into a visually-hidden
+    // `#sr-live` region for screen readers, so `.first()` disambiguates.
     await expect(umbracoUi.page.getByText(/has started\. You can continue working/i).first()).toBeVisible();
+    await expect(umbracoUi.page.getByText('Reindex started', { exact: true })).toBeVisible();
     await waitForIdle(umbracoApi, baseURL!);
     await expect(umbracoUi.page.getByText(/has been queued for reindexing/i).first()).toBeVisible({
       timeout: 15_000,
     });
+    await expect(umbracoUi.page.getByText('Reindex completed', { exact: true })).toBeVisible();
     expect((await readStatus(umbracoApi, baseURL!)).rebuildIndex).toBe(false);
   });
 

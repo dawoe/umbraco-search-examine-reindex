@@ -88,7 +88,7 @@ export class ReindexDetailBoxElement extends UmbLitElement {
     if (status.state === 'Failed') {
       this.#notificationContext?.peek('danger', {
         data: {
-          title: this.localize.term('searchExamineReindex_failedTitle'),
+          headline: this.localize.term('searchExamineReindex_failedTitle'),
           message: status.errorMessage ?? '',
         },
       });
@@ -98,7 +98,7 @@ export class ReindexDetailBoxElement extends UmbLitElement {
     if (!status.rebuildIndex) {
       this.#notificationContext?.peek('positive', {
         data: {
-          title: this.localize.term('searchExamineReindex_completedTitle'),
+          headline: this.localize.term('searchExamineReindex_completedTitle'),
           message: this.localize.term('searchExamineReindex_completedMessage', status.indexAlias),
         },
       });
@@ -158,7 +158,7 @@ export class ReindexDetailBoxElement extends UmbLitElement {
     if (data) {
       this.#notificationContext?.peek('warning', {
         data: {
-          title: this.localize.term('searchExamineReindex_startedTitle'),
+          headline: this.localize.term('searchExamineReindex_startedTitle'),
           message: this.localize.term('searchExamineReindex_startedMessage', alias),
         },
       });
@@ -182,7 +182,7 @@ export class ReindexDetailBoxElement extends UmbLitElement {
 
     this.#notificationContext?.peek('danger', {
       data: {
-        title: this.localize.term('searchExamineReindex_failedTitle'),
+        headline: this.localize.term('searchExamineReindex_failedTitle'),
         message: error?.message ?? '',
       },
     });
