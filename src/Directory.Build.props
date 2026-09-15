@@ -31,14 +31,14 @@
       <Authors>Dave Woestenborghs and contributors</Authors>
       <Product>Umbraco.Community.Search.Examine.Reindex</Product>
       <Company>Umbraco Community</Company>
-      <PackageProjectUrl>https://github.com/dawoe/umbraco-pagespeed-optimization</PackageProjectUrl>
-      <RepositoryUrl>https://github.com/dawoe/umbraco-pagespeed-optimization</RepositoryUrl>
+      <PackageProjectUrl>https://github.com/dawoe/umbraco-search-examine-reindex</PackageProjectUrl>
+      <RepositoryUrl>https://github.com/dawoe/umbraco-search-examine-reindex</RepositoryUrl>
       <PackageIconUrl />
       <PackageIcon>logo.png</PackageIcon>
       <PackageReadmeFile>readme.md</PackageReadmeFile>
       <PackageLicenseExpression>MIT</PackageLicenseExpression>
       <Description>Add on for the Umbraco Search Examine provider that adds a re-index function to the backoffice UI</Description>
-      <PackageTags>umbraco</PackageTags>
+      <PackageTags>umbraco;umbraco-marketplace;search;examine</PackageTags>
       <RepositoryType>git</RepositoryType>
       <Copyright>Copyright &amp;#169; Dave Woestenborghs and contributors.</Copyright>
       <PackageLicenseExpression>MIT</PackageLicenseExpression>
