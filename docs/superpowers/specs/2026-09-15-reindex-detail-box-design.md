@@ -166,10 +166,11 @@ placeholder `reindex.ts`.
 - Click flow: `umbConfirmModal` (warning colour; different content when rebuild is on), then
   `repository.start`, then a "Reindex started" toast, then poll `getStatus` every 3 seconds until
   state is not `Running`. Then a positive toast (reindex) or danger toast (failed).
-- Rebuild mode: once status leaves `Running` without failure, call
-  `workspaceContext.setState('loading')` and `searchContext.setUserWaitingForIndexUpdate(alias, true)`;
-  Umbraco Search's own `IndexRebuildCompleted` handling reloads the workspace and shows the
-  completion toast.
+- Rebuild mode: when the user confirms, call `searchContext.setUserWaitingForIndexUpdate(alias, true)`.
+  Umbraco Search's own `IndexRebuildCompleted` handling then reloads the workspace and shows the
+  completion toast, and the stats box shows the `Rebuilding` health status meanwhile. The element
+  does not call `workspaceContext.setState('loading')`: on small sites the completed event can
+  arrive before the next poll, which would leave the workspace stuck in the loading view.
 - A 409 from `start` is treated as "attach to the running job": begin polling, no error toast.
 - Transient polling errors are ignored and retried on the next tick. Polling stops in
   `disconnectedCallback`.
