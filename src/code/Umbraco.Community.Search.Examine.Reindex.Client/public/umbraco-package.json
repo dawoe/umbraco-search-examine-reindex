@@ -1,13 +1,13 @@
 {
   "$schema": "../node_modules/@umbraco-cms/backoffice/dist-cms/umbraco-package-schema.json",
   "name": "Umbraco Search Examine Reindex",
-  "version": "17.0.0",
+  "version": "18.0.0",
   "extensions": [
     {
       "type": "backofficeEntryPoint",
       "alias": "Umbraco.Community.Search.Examine.Reindex",
       "name": "Umbraco Search Examine Reindex Entry Point",
-      "js": "/App_Plugins/searchreindex/entry-point.js?v=17.0.0"
+      "js": "/App_Plugins/searchreindex/entry-point.js?v=18.0.0"
     }
   ]
 }

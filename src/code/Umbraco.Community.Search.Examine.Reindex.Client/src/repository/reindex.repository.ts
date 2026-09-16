@@ -33,12 +33,15 @@ export class ReindexRepository extends UmbRepositoryBase {
   }
 
   #map(model: ReindexStatusModel): ReindexStatus {
+    // Under OpenAPI 3.1, Microsoft.AspNetCore.OpenApi represents the server's int64
+    // fields as `number | string` (format: int64), so processedItems/totalItems are
+    // coerced back to number here to match the app's own ReindexStatus contract.
     return {
       indexAlias: model.indexAlias,
       state: model.state,
       rebuildIndex: model.rebuildIndex,
-      processedItems: model.processedItems,
-      totalItems: model.totalItems ?? undefined,
+      processedItems: Number(model.processedItems),
+      totalItems: model.totalItems === null || model.totalItems === undefined ? undefined : Number(model.totalItems),
       startedAt: model.startedAt ?? undefined,
       completedAt: model.completedAt ?? undefined,
       errorMessage: model.errorMessage ?? undefined,

@@ -15,13 +15,8 @@ internal static class Constants
     public static class Api
     {
         /// <summary>
-        /// The API name used for routing, Swagger and <c>MapToApi</c>.
+        /// The API name used for routing, the OpenAPI document and <c>MapToApi</c>.
         /// </summary>
         public const string Name = "search-examine-reindex";
-
-        /// <summary>
-        /// The namespace prefix of the package's API controllers.
-        /// </summary>
-        public const string ControllerNamespace = "Umbraco.Community.Search.Examine.Reindex.Controllers";
     }
 }

@@ -18,7 +18,6 @@ namespace Umbraco.Community.Search.Examine.Reindex.Controllers;
 [BackOfficeRoute(Constants.Api.Name + "/api/v{version:apiVersion}")]
 [Authorize(Policy = AuthorizationPolicies.SectionAccessSettings)]
 [MapToApi(Constants.Api.Name)]
-[ApiExplorerSettings(GroupName = "Umbraco Search Examine Reindex")]
 public abstract class ReindexApiControllerBase : ManagementApiControllerBase
 {
 }

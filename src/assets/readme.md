@@ -20,6 +20,9 @@ Umbraco backoffice.
 
 ## Installation
 
+Requires Umbraco 18, with Umbraco Search Core and the Examine provider configured. Depends on a
+prerelease of `Umbraco.Cms.Search.Provider.Examine` (`18.1.0-beta.1`).
+
 ```
 dotnet add package Umbraco.Community.Search.Examine.Reindex
 ```
