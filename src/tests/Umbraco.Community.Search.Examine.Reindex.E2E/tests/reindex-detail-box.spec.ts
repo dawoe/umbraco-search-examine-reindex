@@ -40,7 +40,7 @@ interface StatusBody {
 
 // The plain Playwright `request` fixture does not attach the backoffice bearer token, so the
 // status endpoint returns 401. `umbracoApi.get` (from the testhelpers fixture) attaches it from
-// STORAGE_STAGE_PATH, so we use that for authenticated API calls instead.
+// STORAGE_STATE_PATH, so we use that for authenticated API calls instead.
 async function readStatus(umbracoApi: ApiHelpers, baseURL: string): Promise<StatusBody> {
   const response = await umbracoApi.get(baseURL + STATUS_PATH);
   expect(response.ok()).toBeTruthy();
