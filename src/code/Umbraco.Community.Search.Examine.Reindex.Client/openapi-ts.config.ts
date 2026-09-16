@@ -1,12 +1,12 @@
 import { defineConfig } from '@hey-api/openapi-ts';
 
 export default defineConfig({
-  input: 'swagger.json',
+  input: 'openapi.json',
   output: 'src/api',
   plugins: [
     {
       name: '@hey-api/client-fetch',
-      runtimeConfigPath: '../hey-api.ts',
+      runtimeConfigPath: './src/hey-api.ts',
     },
     '@hey-api/sdk',
   ],

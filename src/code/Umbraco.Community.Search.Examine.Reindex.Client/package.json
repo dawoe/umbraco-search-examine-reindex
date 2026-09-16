@@ -8,15 +8,15 @@
     "build": "tsc && vite build",
     "watch": "vite build --watch",
     "preview": "vite preview",
-    "generate-api": "curl -k -o swagger.json https://localhost:44310/umbraco/swagger/search-examine-reindex/swagger.json && openapi-ts"
+    "generate-api": "curl -k -o openapi.json https://localhost:44310/umbraco/openapi/search-examine-reindex.json && openapi-ts"
   },
   "dependencies": {
     "lit": "^3.3.3"
   },
   "devDependencies": {
-    "@hey-api/openapi-ts": "^0.85.2",
-    "@umbraco-cms/backoffice": "^17.0.0",
-    "@umbraco-cms/search": "^17.1.0",
+    "@hey-api/openapi-ts": "^0.99.0",
+    "@umbraco-cms/backoffice": "^18.0.0",
+    "@umbraco-cms/search": "^18.1.0",
     "typescript": "^6.0.3",
     "vite": "^8.2.2"
   }
