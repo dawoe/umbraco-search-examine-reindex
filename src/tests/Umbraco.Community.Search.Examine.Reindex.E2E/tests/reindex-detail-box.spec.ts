@@ -1,5 +1,5 @@
 import { expect, type Page } from '@playwright/test';
-import { ApiHelpers, test } from '@umbraco/playwright-testhelpers';
+import { ApiHelpers, test } from '@umbraco-cms/acceptance-test-helpers';
 
 const INDEX_ALIAS = 'Umb_PublishedContent';
 const WORKSPACE_PATH = `/umbraco/section/settings/workspace/search-index/edit/${INDEX_ALIAS}`;

@@ -1,5 +1,5 @@
 import { test as setup } from '@playwright/test';
-import { ConstantHelper, UiHelpers } from '@umbraco/playwright-testhelpers';
+import { ConstantHelper, UiHelpers } from '@umbraco-cms/acceptance-test-helpers';
 import { mkdirSync } from 'fs';
 import { dirname } from 'path';
 import { STORAGE_STATE } from '../playwright.config';
