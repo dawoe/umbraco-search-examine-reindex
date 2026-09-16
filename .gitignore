@@ -1,0 +1,10 @@
+[Oo]bj/
+[Bb]in/
+src/.vs/
+src/code/Umbraco.Community.Search.Examine.Reindex/wwwroot/App_Plugins/
+node_modules/
+.env
+.auth/
+test-results/
+playwright-report/
+src/code/Umbraco.Community.Search.Examine.Reindex.Client/swagger.json

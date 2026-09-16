@@ -1,0 +1,5 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\code\Umbraco.Community.Search.Examine.Reindex\Umbraco.Community.Search.Examine.Reindex.csproj" />
+  </ItemGroup>
+</Project>
