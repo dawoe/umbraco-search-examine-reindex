@@ -5,13 +5,15 @@ Guidance for Claude Code when working in this repository.
 ## Project overview
 
 `Umbraco.Community.Search.Examine.Reindex` is an add-on for Umbraco Search (the new search
-abstraction for Umbraco CMS 17+) with the Examine provider. It adds a **Reindex** detail box to
+abstraction for Umbraco CMS 18) with the Examine provider. It adds a **Reindex** detail box to
 the index workspace in the backoffice. Reindex flushes the database cache of index values and
 re-collects them from content; the optional rebuild flushes the cache and triggers Umbraco
 Search's own index rebuild.
 
 Design spec: `docs/superpowers/specs/2026-09-15-reindex-detail-box-design.md`.
 Implementation plan: `docs/superpowers/plans/2026-09-15-reindex-detail-box.md`.
+Design spec (Umbraco 18 upgrade): `docs/superpowers/specs/2026-09-16-umbraco-18-upgrade-design.md`.
+Implementation plan (Umbraco 18 upgrade): `docs/superpowers/plans/2026-09-16-umbraco-18-upgrade.md`.
 
 ## Solution layout
 
@@ -25,7 +27,8 @@ Implementation plan: `docs/superpowers/plans/2026-09-15-reindex-detail-box.md`.
   tests: 1 auth setup + 4 specs)
 - `test-sites/Website-V18/` — Umbraco 18 test site referencing the package project (in the
   solution). `test-sites/Website-V17/` is kept on disk for the 17.x line but is not in the
-  solution.
+  solution, and no longer builds on this branch: it pins `Umbraco.Cms` 17.1.0 while project-
+  referencing a package that now requires Umbraco 18.
 - `src/assets/` — NuGet readme and icon
 
 ## Build and test
@@ -83,7 +86,11 @@ npm run test:e2e
 ## Reference sources on disk
 
 - Umbraco Search: `C:\forks\Umbraco.Cms.Search` (see its `CLAUDE.md`)
-- Umbraco CMS 17.4.2: `C:\forks\Umbraco-CMS-release-17.4.2\Umbraco-CMS-release-17.4.2`
+- Umbraco CMS 17.4.2: `C:\forks\Umbraco-CMS-release-17.4.2\Umbraco-CMS-release-17.4.2` — this tree
+  corresponds to the `v17/develop` maintenance line, not this branch's `develop`. It predates the
+  Swashbuckle → `Microsoft.AspNetCore.OpenApi` migration, so it is not a reference for the
+  Umbraco 18 APIs this package now uses (`AddBackOfficeOpenApiDocument`,
+  `WithBackOfficeAuthentication`, etc.). There is no Umbraco 18 source tree on this machine.
 
 ## Gotchas
 
@@ -94,9 +101,11 @@ npm run test:e2e
   18 peer-requires `>=0.97.0 <1.0.0`, so the old 0.85.2 pin fails `npm install` with ERESOLVE)
   still cannot run on TypeScript 7 (the native rewrite removes the classic compiler API), so
   `npm run generate-api` fails silently with it. The old TS2578 failure on 5.8/5.9 (`Unused
-  '@ts-expect-error' directive` in the generated `client.gen.ts`) is gone under 0.99.0 — TS 5.9
-  now type-checks the generated output cleanly too — but the pin stays at 6.0.3 to match the
-  sibling `Umbraco.Cms.Search` client projects.
+  '@ts-expect-error' directive` in the generated `client.gen.ts`) is gone under 0.99.0 — that was
+  re-tested with TypeScript 5.9.3 installed outside the project's own `^6.0.3` pin, so if a future
+  check against the pinned 6.0.3 itself gives a different result, that is a new data point, not a
+  contradiction of this one — but the pin stays at 6.0.3 to match the sibling `Umbraco.Cms.Search`
+  client projects.
 - `@hey-api/openapi-ts` 0.99 resolves `runtimeConfigPath` relative to `process.cwd()`, not the
   output directory as earlier versions did; that is why `openapi-ts.config.ts` now points it at
   `./src/hey-api.ts`.
@@ -116,10 +125,13 @@ npm run test:e2e
 - The OpenAPI document moved from `/umbraco/swagger/{name}/swagger.json` to
   `/umbraco/openapi/{name}.json`, and is now OpenAPI 3.1 rather than 3.0. It is pretty-printed, so
   any grep against it must tolerate whitespace after the colon (`'"operationId": *"..."'`, not
-  `'"operationId":"..."'`). OpenAPI 3.1 also renders a C# `long` as `"type": ["integer","string"]`,
-  so generated int64 fields (`ReindexStatus.processedItems`/`totalItems`) arrive as
-  `number | string`; `ReindexRepository#map` coerces them with `Number(...)`, while the app's own
-  `ReindexStatus` in `src/types.ts` stays `number`.
+  `'"operationId":"..."'`). Generated integer fields also arrive typed as `number | string` — for
+  example `ReindexStatus.processedItems`/`totalItems` (C# `long`) and `ProblemDetails.status` (C#
+  `int?`) both come out as `"type": [..., "integer", "string"]` with a numeric-string `pattern`.
+  This is not a 3.0 → 3.1 effect and not specific to `long`: the `pattern` is the giveaway that it
+  is `JsonNumberHandling.AllowReadingFromString` in the JSON options used for schema generation,
+  which applies to any C# integer property. `ReindexRepository#map` coerces the affected fields
+  with `Number(...)`, while the app's own `ReindexStatus` in `src/types.ts` stays `number`.
 - Moq and `out` parameters: set up with `out It.Ref<long>.IsAny` and return through a custom
   delegate that has the same signature (see `IndexContentEnumeratorTests`).
 - `IndexOptions.RegisterContentIndex<TIndexer, TSearcher, TStrategy>` accepts interface types as
@@ -127,8 +139,9 @@ npm run test:e2e
 - In rebuild mode the element does not call `workspaceContext.setState('loading')`: Umbraco
   Search's `IndexRebuildCompleted` event can arrive before the next poll and would leave the
   workspace stuck in the loading view. It calls `setUserWaitingForIndexUpdate` instead.
-- Umbraco Search's own toast for a finished rebuild reads "Search Index Rebuild Completed"; the
-  E2E rebuild test waits for it.
+- Umbraco Search's own toast for a finished rebuild does not render its title, only its message
+  ("The rebuild of search index "{0}" has completed successfully."); the E2E rebuild test waits
+  for text matching `/has completed successfully/i` rather than any fixed toast title.
 - The `@umbraco-cms/search` npm package only ships types. Never bundle it; the importmap of the
   Umbraco Search package resolves `@umbraco-cms/search/global` and `/settings` at runtime.
 - `Direction` (member ordering) lives in `Umbraco.Cms.Core`, not in a `Persistence` namespace.
