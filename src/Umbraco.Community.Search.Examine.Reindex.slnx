@@ -1,5 +1,7 @@
 <Solution>
-  <Folder Name="/_Solution/" />
+  <Folder Name="/_Solution/">
+    <File Path="../umbraco-marketplace.json" />
+  </Folder>
   <Folder Name="/_Solution/pipelines/">
     <File Path="../.github/workflows/beta-release.yml" />
     <File Path="../.github/workflows/pr-validation.yml" />

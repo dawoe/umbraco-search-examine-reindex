@@ -1,0 +1,17 @@
+{
+  "AuthorDetails": {
+    "Name": "Dave Woestenborghs",
+    "Description": "Umbraco MVP, contributor and package creator from Belgium",
+    "Url": "https://github.com/dawoe",
+    "ImageUrl": "https://github.com/dawoe.png",
+    "SyncContributorsFromRepository": true
+  },
+  "Category": "Developer Tools",
+  "DocumentationUrl": "https://github.com/dawoe/umbraco-search-examine-reindex",
+  "LicenseTypes": [ "Free" ],
+  "IssueTrackerUrl": "https://github.com/dawoe/umbraco-search-examine-reindex/issues",
+  "PackageType": "Package",
+  "PackagesByAuthor": [ "Our.Umbraco.MultilanguageTextbox", "Dawoe.OEmbedPickerPropertyEditor", "Umbraco.Community.PagespeedOptimizer" ],
+  "Tags": [ "search", "examine", "indexing" ],
+  "Title": "Umbraco Search Examine Reindex"
+}
