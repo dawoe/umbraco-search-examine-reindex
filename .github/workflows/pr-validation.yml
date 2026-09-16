@@ -4,7 +4,6 @@ on:
   pull_request:
     branches:
     - develop
-    - 'v17/**'
 
 jobs:
   build:

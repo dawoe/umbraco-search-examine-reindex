@@ -5,7 +5,7 @@ name: Beta Release
 
 on:
   push:
-    branches: [ "develop", "v17/develop" ]
+    branches: [ "develop" ]
 
 env:
   BUILD_CONFIG: 'Release'
