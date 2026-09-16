@@ -1,4 +1,17 @@
 <Solution>
+  <Folder Name="/_Solution/" />
+  <Folder Name="/_Solution/pipelines/">
+    <File Path="../.github/workflows/beta-release.yml" />
+    <File Path="../.github/workflows/pr-validation.yml" />
+    <File Path="../.github/workflows/release.yml" />
+  </Folder>
+  <Folder Name="/_Solution/PropFiles/">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Folder Name="/_Solution/PropFiles/tests/">
+    <File Path="tests/Directory.Build.props" />
+  </Folder>
   <Project Path="../test-sites/Website-V17/Website-V17.csproj" />
   <Project Path="code/Umbraco.Community.Search.Examine.Reindex/Umbraco.Community.Search.Examine.Reindex.csproj" />
   <Project Path="tests/Umbraco.Community.Search.Examine.Reindex.Tests/Umbraco.Community.Search.Examine.Reindex.Tests.csproj" />
