@@ -2,6 +2,10 @@
 
   <PropertyGroup>
     <StaticWebAssetBasePath>/</StaticWebAssetBasePath>
+    <!-- The Microsoft.AspNetCore.OpenApi source generator propagates through project references
+         but is not auto-enabled in class libraries. Without this, registering an OpenAPI document
+         fails with "error CS9137: The 'interceptors' feature is not enabled". -->
+    <InterceptorsNamespaces>$(InterceptorsNamespaces);Microsoft.AspNetCore.OpenApi.Generated</InterceptorsNamespaces>
   </PropertyGroup>
 
   <ItemGroup>

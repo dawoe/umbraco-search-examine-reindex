@@ -2,14 +2,8 @@
 // Copyright (c) Dave Woestenborghs and contributors. Licensed under the MIT License. See LICENSE in the project root for license information.
 // </copyright>
 
-using Asp.Versioning;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Options;
-using Microsoft.OpenApi;
-using Swashbuckle.AspNetCore.SwaggerGen;
 using Umbraco.Cms.Api.Common.OpenApi;
 using Umbraco.Cms.Api.Management.OpenApi;
 using Umbraco.Cms.Core.DependencyInjection;
@@ -43,35 +37,25 @@ public static class UmbracoBuilderExtensions
         builder.Services.AddSingleton<IIndexContentEnumerator, IndexContentEnumerator>();
         builder.Services.AddTransient<IIndexContentReindexer, IndexContentReindexer>();
 
-        builder.Services.AddSingleton<IOperationIdHandler, ReindexOperationIdHandler>();
-        builder.Services.Configure<SwaggerGenOptions>(options =>
-        {
-            options.SwaggerDoc(Constants.Api.Name, new OpenApiInfo
-            {
-                Title = "Umbraco Search Examine Reindex API",
-                Version = "1.0",
-            });
-            options.OperationFilter<ReindexOperationSecurityFilter>();
-        });
+        builder.AddBackOfficeOpenApiDocument(
+            Constants.Api.Name,
+            document => document
+                .WithTitle("Umbraco Search Examine Reindex API")
+                .WithBackOfficeAuthentication()
+                .ConfigureOpenApiOptions(options => options.AddOperationTransformer(
+                    (operation, context, _) =>
+                    {
+                        // Mirrors the operation IDs the Swashbuckle-era OperationIdHandler produced,
+                        // so the generated TypeScript SDK keeps the same function names. The
+                        // transformer is scoped to this document, so no controller-namespace check
+                        // is needed: it only ever sees this package's operations.
+                        var actionName = $"{context.Description.ActionDescriptor.RouteValues["action"]}";
+                        operation.OperationId = actionName.Length == 0
+                            ? actionName
+                            : string.Concat(char.ToLowerInvariant(actionName[0]), actionName[1..]);
+                        return Task.CompletedTask;
+                    })));
 
         return builder;
-    }
-
-    private sealed class ReindexOperationSecurityFilter : BackOfficeSecurityRequirementsOperationFilterBase
-    {
-        protected override string ApiName => Constants.Api.Name;
-    }
-
-    private sealed class ReindexOperationIdHandler(IOptions<ApiVersioningOptions> apiVersioningOptions)
-        : OperationIdHandler(apiVersioningOptions)
-    {
-        public override string Handle(ApiDescription apiDescription)
-        {
-            var actionName = $"{apiDescription.ActionDescriptor.RouteValues["action"]}";
-            return actionName.Length == 0 ? actionName : string.Concat(char.ToLowerInvariant(actionName[0]), actionName[1..]);
-        }
-
-        protected override bool CanHandle(ApiDescription apiDescription, ControllerActionDescriptor controllerActionDescriptor)
-            => controllerActionDescriptor.ControllerTypeInfo.Namespace?.StartsWith(Constants.Api.ControllerNamespace, StringComparison.OrdinalIgnoreCase) is true;
     }
 }

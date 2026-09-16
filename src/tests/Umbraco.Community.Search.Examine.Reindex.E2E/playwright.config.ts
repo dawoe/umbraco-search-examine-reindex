@@ -8,7 +8,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export const STORAGE_STATE = join(__dirname, '.auth/user.json');
 
 // The Umbraco testhelpers read the auth token from this file.
-process.env.STORAGE_STAGE_PATH = STORAGE_STATE;
+process.env.STORAGE_STATE_PATH = STORAGE_STATE;
 // The testhelpers also read URL from this variable.
 process.env.URL = process.env.UMBRACO_URL ?? 'https://localhost:44310';
 

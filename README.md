@@ -32,7 +32,10 @@ content that is already cached. This package flushes that cache and re-collects 
 dotnet add package Umbraco.Community.Search.Examine.Reindex
 ```
 
-Requires Umbraco 17 with Umbraco Search Core and the Examine provider configured.
+Requires Umbraco 18 with Umbraco Search Core and the Examine provider configured.
+
+Umbraco 17 is supported by the 17.x releases of this package, maintained on the `v17/develop`
+branch.
 
 ## Development
 
